@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 gem "google-cloud-discovery_engine-v1beta", "<= 0.20.1"
 gem "govuk_app_config"
@@ -13,6 +13,6 @@ end
 group :development, :test do
   gem "brakeman", require: false
   gem "govuk_test"
-  gem "rubocop-govuk", require: false
   gem "rspec"
+  gem "rubocop-govuk", require: false
 end
