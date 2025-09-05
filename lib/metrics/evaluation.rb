@@ -35,7 +35,7 @@ module Metrics
     def record_evaluation(key, registry, month, dataset, evaluation_result)
       TOP_K_LEVELS.each do |k|
         value = evaluation_result.dig(key, :"top_#{k}")
-        registry.set(value, labels: { top: k, month:, dataset: }) if value.present?
+        registry.set(value, labels: { top: k, month:, dataset: }) if !value.nil?
       end
     end
   end
