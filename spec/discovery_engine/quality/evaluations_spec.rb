@@ -9,7 +9,6 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluations" do
   let(:clickstream_query_set) { double("sample_query_set", table_id: "clickstream", name: "/path/to/clickstream-set") }
   let(:binary_query_set) { double("sample_query_set", table_id: "binary", name: "/path/to/binary-set") }
   let(:quality_evaluation) { instance_double("DiscoveryEngine::Quality::Evaluation") }
-  let(:quality_sample_query_sets) { instance_double("DiscoveryEngine::Quality::SampleQuerySets") }
 
   before do
     allow(quality_evaluation)
@@ -37,7 +36,7 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluations" do
       .to receive(:record_evaluations)
       .with(evaluation_response, label, "binary")
 
-      allow(quality_sample_query_sets)
+      allow(DiscoveryEngine::Quality::SampleQuerySets)
       .to receive(:new)
       .with(label)
       .and_return(sample_query_sets)
@@ -94,7 +93,7 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluations" do
 
     context "when the table_id 'binary' is passed in" do
       before do
-        allow(quality_sample_query_sets)
+        allow(DiscoveryEngine::Quality::SampleQuerySets)
         .to receive(:new)
         .with(anything)
         .and_return(binary_query_set)
@@ -111,7 +110,7 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluations" do
 
     context "when the table_id 'clickstream' is passed in" do
       before do
-        allow(quality_sample_query_sets)
+        allow(DiscoveryEngine::Quality::SampleQuerySets)
         .to receive(:new)
         .with(anything)
         .and_return(clickstream_query_set)

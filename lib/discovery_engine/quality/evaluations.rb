@@ -1,3 +1,5 @@
+require "discovery_engine/quality/evaluation"
+
 module DiscoveryEngine
   module Quality
     class Evaluations
