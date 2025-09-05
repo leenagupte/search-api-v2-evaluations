@@ -1,3 +1,5 @@
+require "discovery_engine/quality/month_interval"
+
 module DiscoveryEngine
   module Quality
     class SampleQuerySet
