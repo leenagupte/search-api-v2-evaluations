@@ -13,6 +13,7 @@ RSpec.describe "DiscoveryEngine::Quality::SampleQuerySet" do
   let(:sample_query_service_stub) { double("sample_query_service", import_sample_queries: operation_object) }
   let(:operation_object) { double("operation", wait_until_done!: true, error?: false) }
   let(:table_id) { "clickstream" }
+  let(:logger) { instance_double(Logger) }
 
   describe "#create_and_import_queries" do
     context "when the month label ':last_month' is provided" do
@@ -67,13 +68,13 @@ RSpec.describe "DiscoveryEngine::Quality::SampleQuerySet" do
             .with(anything)
             .and_raise(Google::Cloud::AlreadyExistsError)
 
-          allow(Rails.logger).to receive(:warn)
+          allow(logger).to receive(:warn)
         end
 
         it "handles the error and logs a warning" do
           sample_query_set.create_and_import_queries
           expect(erroring_service).to have_received(:create_sample_query_set).exactly(1).times
-          expect(Rails.logger).to have_received(:warn)
+          expect(logger).to have_received(:warn)
             .with("SampleQuerySet clickstream 2025-10 already exists. Skipping query set creation...")
         end
       end

@@ -3,6 +3,7 @@ require "clients"
 RSpec.describe "DiscoveryEngine::Quality::Evaluation" do
   let(:sample_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, name: "/set", display_name: "clickstream 2025-10") }
   let(:evaluation) { described_class.new(sample_set) }
+  let(:logger) { instance_double(Logger) }
 
   describe "#quality_metrics" do
     let(:evaluation_service) { double("evaluation_service", create_evaluation: operation) }
@@ -36,7 +37,7 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluation" do
 
     before do
       allow(Clients).to receive(:evaluation_service).and_return(evaluation_service)
-      allow(Rails.logger).to receive(:info)
+      allow(logger).to receive(:info)
     end
 
     context "when operation does not complete" do
@@ -59,14 +60,13 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluation" do
           .with(anything)
           .and_raise(Google::Cloud::AlreadyExistsError)
 
-        allow(Rails.logger)
-          .to receive(:warn)
+        allow(logger).to receive(:warn)
       end
 
       it "logs then raises the error" do
         expect { evaluation.quality_metrics }.to raise_error(Google::Cloud::AlreadyExistsError)
 
-        expect(Rails.logger).to have_received(:warn)
+        expect(logger).to have_received(:warn)
           .with("Failed to create an evaluation of sample set clickstream 2025-10 (Google::Cloud::AlreadyExistsError)")
       end
     end
@@ -95,7 +95,7 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluation" do
           },
         )
 
-        expect(Rails.logger).to have_received(:info)
+        expect(logger).to have_received(:info)
           .with("Successfully created an evaluation of sample set clickstream 2025-10")
       end
 
@@ -132,7 +132,7 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluation" do
 
         expect(Kernel).to have_received(:sleep)
 
-        expect(Rails.logger).to have_received(:info).with("Still waiting for evaluation to complete...")
+        expect(logger).to have_received(:info).with("Still waiting for evaluation to complete...")
       end
     end
   end

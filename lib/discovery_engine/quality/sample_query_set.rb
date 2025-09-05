@@ -10,6 +10,7 @@ module DiscoveryEngine
         @month = month
         @year = year
         @table_id = table_id
+        @logger = Logger.new("logs/app.log")
       end
 
       def create_and_import_queries
@@ -27,7 +28,7 @@ module DiscoveryEngine
 
     private
 
-      attr_reader :month_label, :month, :year
+      attr_reader :logger, :month_label, :month, :year
 
       def create_set
         Clients
@@ -41,7 +42,7 @@ module DiscoveryEngine
             parent: Rails.application.config.discovery_engine_default_location_name,
           )
       rescue Google::Cloud::AlreadyExistsError
-        Rails.logger.warn("SampleQuerySet #{display_name} already exists. Skipping query set creation...")
+        logger.warn("SampleQuerySet #{display_name} already exists. Skipping query set creation...")
       end
 
       def import_queries
@@ -65,7 +66,7 @@ module DiscoveryEngine
 
         raise operation.error.message if operation.error?
 
-        Rails.logger.info("Successfully imported sample queries into: #{name}")
+        logger.info("Successfully imported sample queries into: #{name}")
       end
 
       def description

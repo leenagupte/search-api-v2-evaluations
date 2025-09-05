@@ -29,7 +29,7 @@ namespace :quality do
     metric_collector = Metrics::Evaluation.new(registry)
     evaluations = DiscoveryEngine::Quality::Evaluations.new(metric_collector)
 
-    Rails.logger.info("Getting ready to fetch quality metrics for #{table_id || 'all'} datasets")
+    logger.info("Getting ready to fetch quality metrics for #{table_id || 'all'} datasets")
 
     evaluations.collect_all_quality_metrics(table_id.presence)
 
@@ -38,7 +38,7 @@ namespace :quality do
       gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
     ).add(registry)
   rescue Prometheus::Client::Push::HttpError => e
-    Rails.logger.warn("Failed to push evaluations to Prometheus push gateway: '#{e.message}'")
+    Logger.warn("Failed to push evaluations to Prometheus push gateway: '#{e.message}'")
     raise e
   end
 end

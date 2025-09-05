@@ -91,7 +91,7 @@ RSpec.describe "Quality tasks" do
         .with(registry)
         .and_return(metric_collector)
 
-      allow(Rails.logger).to receive(:info)
+      allow(Logger).to receive(:info)
     end
 
     it "reports quality metrics to prometheus" do
@@ -99,7 +99,7 @@ RSpec.describe "Quality tasks" do
         expect(evaluations)
           .to receive(:collect_all_quality_metrics)
           .once
-        expect(Rails.logger)
+        expect(Logger)
           .to receive(:info)
           .with(logger_message)
         Rake::Task["quality:report_quality_metrics"].invoke
@@ -111,12 +111,12 @@ RSpec.describe "Quality tasks" do
 
       before do
         Rake::Task["quality:report_quality_metrics"].reenable
-        allow(Rails.logger).to receive(:info)
+        allow(Logger).to receive(:info)
       end
 
       it "reports quality metrics for the given table only" do
         ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
-          expect(Rails.logger)
+          expect(Logger)
             .to receive(:info)
             .with(logger_message)
 
@@ -147,12 +147,12 @@ RSpec.describe "Quality tasks" do
           .to receive(:add)
           .and_raise(Prometheus::Client::Push::HttpError)
 
-        allow(Rails.logger).to receive(:warn)
+        allow(Logger).to receive(:warn)
       end
 
       it "logs and raises an error" do
         ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
-          expect(Rails.logger).to receive(:warn).with(logger_message)
+          expect(Logger).to receive(:warn).with(logger_message)
 
           expect {
             Rake::Task["quality:report_quality_metrics"].invoke

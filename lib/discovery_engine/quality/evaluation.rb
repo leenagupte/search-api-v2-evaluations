@@ -1,7 +1,10 @@
+require "logger"
+
 module DiscoveryEngine::Quality
   class Evaluation
     def initialize(sample_set)
       @sample_set = sample_set
+      @logger = Logger.new("logs/app.log")
     end
 
     def quality_metrics
@@ -10,7 +13,7 @@ module DiscoveryEngine::Quality
 
   private
 
-    attr_reader :sample_set, :result
+    attr_reader :logger, :sample_set, :result
 
     def api_response
       create_evaluation
@@ -39,19 +42,20 @@ module DiscoveryEngine::Quality
 
       @result = operation.results
 
-      Rails.logger.info("Successfully created an evaluation of sample set #{sample_set.display_name}")
+
+      logger.info("Successfully created an evaluation of sample set #{sample_set.display_name}")
     rescue Google::Cloud::AlreadyExistsError => e
-      Rails.logger.warn("Failed to create an evaluation of sample set #{sample_set.display_name} (#{e.message})")
+      logger.warn("Failed to create an evaluation of sample set #{sample_set.display_name} (#{e.message})")
       raise e
     end
 
     def get_evaluation_with_wait
-      Rails.logger.info("Fetching evaluations...")
+      logger.info("Fetching evaluations...")
 
       while (e = get_evaluation)
         return e if e.state == :SUCCEEDED
 
-        Rails.logger.info("Still waiting for evaluation to complete...")
+        logger.info("Still waiting for evaluation to complete...")
         Kernel.sleep(10)
       end
     end
