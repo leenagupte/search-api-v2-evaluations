@@ -1,3 +1,4 @@
+require "rake"
 require "prometheus/client"
 require "prometheus/client/push"
 
