@@ -69,6 +69,7 @@ RSpec.describe "Quality tasks" do
   describe "quality:report_quality_metrics" do
     let(:push_client) { double("push_client", add: nil) }
     let(:logger_message) { "Getting ready to fetch quality metrics for all datasets" }
+    let(:logger) { instance_double(Logger) }
 
     before do
       Rake::Task["quality:report_quality_metrics"].reenable
@@ -91,7 +92,7 @@ RSpec.describe "Quality tasks" do
         .with(registry)
         .and_return(metric_collector)
 
-      allow(Logger).to receive(:info)
+      allow(logger).to receive(:info)
     end
 
     it "reports quality metrics to prometheus" do
@@ -99,7 +100,7 @@ RSpec.describe "Quality tasks" do
         expect(evaluations)
           .to receive(:collect_all_quality_metrics)
           .once
-        expect(Logger)
+        expect(logger)
           .to receive(:info)
           .with(logger_message)
         Rake::Task["quality:report_quality_metrics"].invoke
@@ -111,12 +112,12 @@ RSpec.describe "Quality tasks" do
 
       before do
         Rake::Task["quality:report_quality_metrics"].reenable
-        allow(Logger).to receive(:info)
+        allow(logger).to receive(:info)
       end
 
       it "reports quality metrics for the given table only" do
         ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
-          expect(Logger)
+          expect(logger)
             .to receive(:info)
             .with(logger_message)
 
@@ -147,12 +148,12 @@ RSpec.describe "Quality tasks" do
           .to receive(:add)
           .and_raise(Prometheus::Client::Push::HttpError)
 
-        allow(Logger).to receive(:warn)
+        allow(logger).to receive(:warn)
       end
 
       it "logs and raises an error" do
         ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
-          expect(Logger).to receive(:warn).with(logger_message)
+          expect(logger).to receive(:warn).with(logger_message)
 
           expect {
             Rake::Task["quality:report_quality_metrics"].invoke
