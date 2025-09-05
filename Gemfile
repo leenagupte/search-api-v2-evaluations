@@ -6,6 +6,7 @@ gem "govuk_app_config"
 gem "prometheus-client"
 
 group :test do
+  gem "climate_control"
   gem "pry"
   gem "simplecov", require: false
   gem "timecop"
