@@ -1,3 +1,5 @@
+require "clients"
+
 RSpec.describe "DiscoveryEngine::Quality::SampleQuerySet" do
   around do |example|
     Timecop.freeze(2025, 11, 1) { example.call }
@@ -58,7 +60,7 @@ RSpec.describe "DiscoveryEngine::Quality::SampleQuerySet" do
         let(:erroring_service) { double("sample_query_set") }
 
         before do
-          allow(DiscoveryEngine::Clients).to receive(:sample_query_set_service).and_return(erroring_service)
+          allow(Clients).to receive(:sample_query_set_service).and_return(erroring_service)
 
           allow(erroring_service)
             .to receive(:create_sample_query_set)

@@ -1,3 +1,5 @@
+require "clients"
+
 RSpec.describe "DiscoveryEngine::Quality::Evaluation" do
   let(:sample_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, name: "/set", display_name: "clickstream 2025-10") }
   let(:evaluation) { described_class.new(sample_set) }
@@ -33,7 +35,7 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluation" do
     end
 
     before do
-      allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(evaluation_service)
+      allow(Clients).to receive(:evaluation_service).and_return(evaluation_service)
       allow(Rails.logger).to receive(:info)
     end
 
@@ -50,7 +52,7 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluation" do
       let(:erroring_service) { double("evaluation") }
 
       before do
-        allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(erroring_service)
+        allow(Clients).to receive(:evaluation_service).and_return(erroring_service)
 
         allow(erroring_service)
           .to receive(:create_evaluation)

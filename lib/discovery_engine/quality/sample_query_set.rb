@@ -30,7 +30,7 @@ module DiscoveryEngine
       attr_reader :month_label, :month, :year
 
       def create_set
-        DiscoveryEngine::Clients
+        Clients
           .sample_query_set_service
           .create_sample_query_set(
             sample_query_set: {
@@ -45,7 +45,7 @@ module DiscoveryEngine
       end
 
       def import_queries
-        operation = DiscoveryEngine::Clients
+        operation = Clients
           .sample_query_service
           .import_sample_queries(
             parent: name,
