@@ -4,12 +4,12 @@ require "prometheus/client/push"
 
 namespace :quality do
   desc "Create sample query sets from each of last months BigQuery tables"
-  task setup_sample_query_sets: :environment do
+  task :setup_sample_query_sets do
     DiscoveryEngine::Quality::SampleQuerySets.new(:last_month).create_and_import_all
   end
 
   desc "Create a sample query set for a given month, year and table id"
-  task :setup_sample_query_set, %i[year month table_id] => :environment do |_, args|
+  task :setup_sample_query_set, %i[year month table_id] do |_, args|
     year = args[:year]&.to_i
     month = args[:month]&.to_i
     table_id = args[:table_id]
@@ -24,7 +24,7 @@ namespace :quality do
   # Example usage rake quality:report_quality_metrics would generate and report metrics for all tables
   # or rake quality:report_quality_metrics[clickstream] to target a single dataset
   desc "Create evaluations and push results to Prometheus"
-  task :report_quality_metrics, [:table_id] => :environment do |_, args|
+  task :report_quality_metrics, [:table_id] do |_, args|
     table_id = args[:table_id]
     registry = Prometheus::Client.registry
     metric_collector = Metrics::Evaluation.new(registry)
