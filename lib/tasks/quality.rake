@@ -29,7 +29,7 @@ namespace :quality do
   # or rake quality:report_quality_metrics[clickstream] to target a single dataset
   desc "Create evaluations and push results to Prometheus"
   task :report_quality_metrics, [:table_id] do |_, args|
-    table_id = args[:table_id]
+    table_id = args[:table_id] || nil
     registry = Prometheus::Client.registry
     metric_collector = Metrics::Evaluation.new(registry)
     evaluations = DiscoveryEngine::Quality::Evaluations.new(metric_collector)
@@ -37,7 +37,7 @@ namespace :quality do
 
     logger.info("Getting ready to fetch quality metrics for #{table_id || 'all'} datasets")
 
-    evaluations.collect_all_quality_metrics(table_id.presence)
+    evaluations.collect_all_quality_metrics(table_id)
 
     Prometheus::Client::Push.new(
       job: "evaluation_report_quality_metrics",
