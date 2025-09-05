@@ -8,6 +8,8 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluations" do
   let(:sample_query_sets) { double("sample_query_sets") }
   let(:clickstream_query_set) { double("sample_query_set", table_id: "clickstream", name: "/path/to/clickstream-set") }
   let(:binary_query_set) { double("sample_query_set", table_id: "binary", name: "/path/to/binary-set") }
+  let(:quality_evaluation) { instance_double("DiscoveryEngine::Quality::Evaluation") }
+  let(:quality_sample_query_sets) { instance_double("DiscoveryEngine::Quality::SampleQuerySets") }
 
   before do
     allow(DiscoveryEngine::Quality::Evaluation)

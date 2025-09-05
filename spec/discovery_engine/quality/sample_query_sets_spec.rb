@@ -1,7 +1,7 @@
 RSpec.describe "DiscoveryEngine::Quality::SampleQuerySets" do
   subject(:sample_query_sets) { described_class.new(:last_month) }
 
-  let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
+  let(:sample_query_set) { instance_double("DiscoveryEngine::Quality::SampleQuerySet") }
   let(:month_label) { :last_month }
 
   describe "#all" do
@@ -23,8 +23,8 @@ RSpec.describe "DiscoveryEngine::Quality::SampleQuerySets" do
   end
 
   describe "#create_and_import_all" do
-    let(:sample_query_set_clickstream) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
-    let(:sample_query_set_binary) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
+    let(:sample_query_set_clickstream) { instance_double("DiscoveryEngine::Quality::SampleQuerySet") }
+    let(:sample_query_set_binary) { instance_double("DiscoveryEngine::Quality::SampleQuerySet") }
 
     it "calls create_and_import_queries on each SampleQuerySet instance" do
       allow(DiscoveryEngine::Quality::SampleQuerySet)

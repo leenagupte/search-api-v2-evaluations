@@ -1,10 +1,10 @@
 RSpec.describe "Quality tasks" do
-  let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
-  let(:sample_query_sets) { instance_double(DiscoveryEngine::Quality::SampleQuerySets) }
-  let(:evaluations) { instance_double(DiscoveryEngine::Quality::Evaluations) }
+  let(:sample_query_set) { instance_double("DiscoveryEngine::Quality::SampleQuerySet") }
+  let(:sample_query_sets) { instance_double("DiscoveryEngine::Quality::SampleQuerySets") }
+  let(:evaluations) { instance_double("DiscoveryEngine::Quality::Evaluations") }
   let(:evaluation_response) { double }
   let(:registry) { double("registry", gauge: nil) }
-  let(:metric_collector) { instance_double(Metrics::Evaluation) }
+  let(:metric_collector) { instance_double("Metrics::Evaluation") }
 
   describe "quality:setup_sample_query_sets" do
     before do
