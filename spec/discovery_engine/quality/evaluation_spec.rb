@@ -1,4 +1,4 @@
-RSpec.describe DiscoveryEngine::Quality::Evaluation do
+RSpec.describe "DiscoveryEngine::Quality::Evaluation" do
   let(:sample_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, name: "/set", display_name: "clickstream 2025-10") }
   let(:evaluation) { described_class.new(sample_set) }
 

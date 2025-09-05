@@ -1,12 +1,10 @@
-require "lib/discovery_engine/sample_query_set"
-
-RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
+RSpec.describe "DiscoveryEngine::Quality::SampleQuerySet" do
   around do |example|
     Timecop.freeze(2025, 11, 1) { example.call }
   end
 
   before do
-    allow(DiscoveryEngine::Clients).to receive_messages(sample_query_set_service: sample_query_set_service_stub, sample_query_service: sample_query_service_stub)
+    allow(Clients).to receive_messages(sample_query_set_service: sample_query_set_service_stub, sample_query_service: sample_query_service_stub)
   end
 
   let(:sample_query_set_service_stub) { double("sample_query_set_service", create_sample_query_set: nil) }

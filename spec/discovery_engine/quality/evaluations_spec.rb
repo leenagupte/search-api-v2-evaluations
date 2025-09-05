@@ -1,6 +1,4 @@
-require "lib/discovery_engine/evaluations"
-
-RSpec.describe DiscoveryEngine::Quality::Evaluations do
+RSpec.describe "DiscoveryEngine::Quality::Evaluations" do
   subject(:evaluations) { described_class.new(metric_collector) }
 
   let(:metric_collector) { double("metric_collector") }

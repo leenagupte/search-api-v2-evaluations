@@ -1,6 +1,4 @@
-require "lib/discovery_engine/month_interval"
-
-RSpec.describe DiscoveryEngine::Quality::MonthInterval do
+RSpec.describe "DiscoveryEngine::Quality::MonthInterval" do
   subject(:month_interval) { described_class.new(year, month) }
 
   let(:year) { 1989 }

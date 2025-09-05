@@ -1,6 +1,4 @@
-require "lib/metrics/evaluation"
-
-RSpec.describe Metrics::Evaluation do
+RSpec.describe "Metrics::Evaluation" do
   subject(:evaluation) { described_class.new(registry) }
 
   let(:registry) { double("registry") }

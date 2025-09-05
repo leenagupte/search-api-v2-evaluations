@@ -1,6 +1,4 @@
-require "lib/discovery_engine/sample_query_sets"
-
-RSpec.describe DiscoveryEngine::Quality::SampleQuerySets do
+RSpec.describe "DiscoveryEngine::Quality::SampleQuerySets" do
   subject(:sample_query_sets) { described_class.new(:last_month) }
 
   let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
