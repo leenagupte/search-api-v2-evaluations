@@ -1,4 +1,8 @@
 require "rake"
+require "discovery_engine/quality/evaluations"
+require "discovery_engine/quality/sample_query_set"
+require "discovery_engine/quality/sample_query_sets"
+require "metrics/evaluation"
 require "prometheus/client"
 require "prometheus/client/push"
 

@@ -10,13 +10,13 @@ RSpec.describe "Quality tasks" do
     before do
       Rake::Task["quality:setup_sample_query_sets"].reenable
 
-      allow(sample_query_sets)
-      .to receive(:new)
-      .with(:last_month)
-      .and_return(sample_query_sets)
+      allow(DiscoveryEngine::Quality::SampleQuerySets)
+        .to receive(:new)
+        .with(:last_month)
+        .and_return(sample_query_sets)
 
       allow(sample_query_sets)
-      .to receive(:create_and_import_all)
+        .to receive(:create_and_import_all)
     end
 
     it "creates and imports a sample set" do
@@ -31,10 +31,10 @@ RSpec.describe "Quality tasks" do
     before do
       Rake::Task["quality:setup_sample_query_set"].reenable
 
-      allow(sample_query_set)
-      .to receive(:new)
-      .with(month: 1, year: 2025, table_id: "clickstream")
-      .and_return(sample_query_set)
+      allow(DiscoveryEngine::Quality::SampleQuerySet)
+        .to receive(:new)
+          .with(month: 1, year: 2025, table_id: "clickstream")
+          .and_return(sample_query_set)
     end
 
     it "creates and imports a sample set" do
