@@ -19,7 +19,7 @@ namespace :quality do
     table_id = args[:table_id]
 
     raise "year and month are required arguments" unless year.positive? && month.positive?
-    raise "table id is a required argument" if table_id.blank?
+    raise "table id is a required argument" if (table_id.nil? || table_id.empty?)
     raise "arguments must be provided in YYYY MM order" if year < month
 
     DiscoveryEngine::Quality::SampleQuerySet.new(month:, year:, table_id:).create_and_import_queries
