@@ -10,7 +10,7 @@ RSpec.describe "Quality tasks" do
     before do
       Rake::Task["quality:setup_sample_query_sets"].reenable
 
-      allow(DiscoveryEngine::Quality::SampleQuerySets)
+      allow(sample_query_sets)
       .to receive(:new)
       .with(:last_month)
       .and_return(sample_query_sets)
@@ -31,7 +31,7 @@ RSpec.describe "Quality tasks" do
     before do
       Rake::Task["quality:setup_sample_query_set"].reenable
 
-      allow(DiscoveryEngine::Quality::SampleQuerySet)
+      allow(sample_query_set)
       .to receive(:new)
       .with(month: 1, year: 2025, table_id: "clickstream")
       .and_return(sample_query_set)

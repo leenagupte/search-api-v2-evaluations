@@ -10,11 +10,11 @@ RSpec.describe "DiscoveryEngine::Quality::SampleQuerySets" do
     end
 
     it "creates a SampleQuerySet object for each table name" do
-      expect(DiscoveryEngine::Quality::SampleQuerySet)
+      expect(sample_query_set)
         .to receive(:new)
         .with(table_id: "clickstream", month_label:)
 
-      expect(DiscoveryEngine::Quality::SampleQuerySet)
+      expect(sample_query_set)
         .to receive(:new)
         .with(table_id: "binary", month_label:)
 
@@ -27,12 +27,12 @@ RSpec.describe "DiscoveryEngine::Quality::SampleQuerySets" do
     let(:sample_query_set_binary) { instance_double("DiscoveryEngine::Quality::SampleQuerySet") }
 
     it "calls create_and_import_queries on each SampleQuerySet instance" do
-      allow(DiscoveryEngine::Quality::SampleQuerySet)
+      allow(sample_query_set_clickstream)
         .to receive(:new)
         .with(table_id: "clickstream", month_label: month_label)
         .and_return(sample_query_set_clickstream)
 
-      allow(DiscoveryEngine::Quality::SampleQuerySet)
+      allow(sample_query_set_binary)
         .to receive(:new)
         .with(table_id: "binary", month_label: month_label)
         .and_return(sample_query_set_binary)

@@ -12,12 +12,12 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluations" do
   let(:quality_sample_query_sets) { instance_double("DiscoveryEngine::Quality::SampleQuerySets") }
 
   before do
-    allow(DiscoveryEngine::Quality::Evaluation)
+    allow(quality_evaluation)
       .to receive(:new)
       .with(clickstream_query_set)
       .and_return(clickstream_evaluation)
 
-    allow(DiscoveryEngine::Quality::Evaluation)
+    allow(quality_evaluation)
       .to receive(:new)
       .with(binary_query_set)
       .and_return(binary_evaluation)
@@ -37,7 +37,7 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluations" do
       .to receive(:record_evaluations)
       .with(evaluation_response, label, "binary")
 
-      allow(DiscoveryEngine::Quality::SampleQuerySets)
+      allow(quality_sample_query_sets)
       .to receive(:new)
       .with(label)
       .and_return(sample_query_sets)
@@ -70,7 +70,7 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluations" do
       let(:govuk_error) { instance_double("GovukError") }
 
       before do
-        allow(DiscoveryEngine::Quality::Evaluation)
+        allow(quality_evaluation)
           .to receive(:new)
           .with(clickstream_query_set)
           .and_return(erroring_evaluation)
@@ -94,7 +94,7 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluations" do
 
     context "when the table_id 'binary' is passed in" do
       before do
-        allow(DiscoveryEngine::Quality::SampleQuerySet)
+        allow(quality_sample_query_sets)
         .to receive(:new)
         .with(anything)
         .and_return(binary_query_set)
@@ -111,7 +111,7 @@ RSpec.describe "DiscoveryEngine::Quality::Evaluations" do
 
     context "when the table_id 'clickstream' is passed in" do
       before do
-        allow(DiscoveryEngine::Quality::SampleQuerySet)
+        allow(quality_sample_query_sets)
         .to receive(:new)
         .with(anything)
         .and_return(clickstream_query_set)
