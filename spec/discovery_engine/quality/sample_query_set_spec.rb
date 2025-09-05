@@ -1,6 +1,7 @@
 require "clients"
+require "discovery_engine/quality/sample_query_set"
 
-RSpec.describe "DiscoveryEngine::Quality::SampleQuerySet" do
+RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
   around do |example|
     Timecop.freeze(2025, 11, 1) { example.call }
   end
