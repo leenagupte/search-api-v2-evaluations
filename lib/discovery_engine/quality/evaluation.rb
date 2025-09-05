@@ -1,67 +1,69 @@
 require "logger"
 
-module DiscoveryEngine::Quality
-  class Evaluation
-    def initialize(sample_set)
-      @sample_set = sample_set
-      @logger = Logger.new("logs/app.log")
-    end
+module DiscoveryEngine
+  module Quality
+    class Evaluation
+      def initialize(sample_set)
+        @sample_set = sample_set
+        @logger = Logger.new("logs/app.log")
+      end
 
-    def quality_metrics
-      @quality_metrics ||= api_response.quality_metrics.to_h
-    end
+      def quality_metrics
+        @quality_metrics ||= api_response.quality_metrics.to_h
+      end
 
-  private
+    private
 
-    attr_reader :logger, :sample_set, :result
+      attr_reader :logger, :sample_set, :result
 
-    def api_response
-      create_evaluation
-      get_evaluation_with_wait
-    end
+      def api_response
+        create_evaluation
+        get_evaluation_with_wait
+      end
 
-    def create_evaluation
-      operation = Clients
-        .evaluation_service
-        .create_evaluation(
-          parent: Rails.application.config.discovery_engine_default_location_name,
-          evaluation: {
-            evaluation_spec: {
-              query_set_spec: {
-                sample_query_set: sample_set.name,
-              },
-              search_request: {
-                serving_config: ServingConfig.default.name,
+      def create_evaluation
+        operation = Clients
+          .evaluation_service
+          .create_evaluation(
+            parent: Rails.application.config.discovery_engine_default_location_name,
+            evaluation: {
+              evaluation_spec: {
+                query_set_spec: {
+                  sample_query_set: sample_set.name,
+                },
+                search_request: {
+                  serving_config: ServingConfig.default.name,
+                },
               },
             },
-          },
-        )
-      operation.wait_until_done!
+          )
+        operation.wait_until_done!
 
-      raise operation.error.message.to_s if operation.error?
+        raise operation.error.message.to_s if operation.error?
 
-      @result = operation.results
+        @result = operation.results
 
 
-      logger.info("Successfully created an evaluation of sample set #{sample_set.display_name}")
-    rescue Google::Cloud::AlreadyExistsError => e
-      logger.warn("Failed to create an evaluation of sample set #{sample_set.display_name} (#{e.message})")
-      raise e
-    end
-
-    def get_evaluation_with_wait
-      logger.info("Fetching evaluations...")
-
-      while (e = get_evaluation)
-        return e if e.state == :SUCCEEDED
-
-        logger.info("Still waiting for evaluation to complete...")
-        Kernel.sleep(10)
+        logger.info("Successfully created an evaluation of sample set #{sample_set.display_name}")
+      rescue Google::Cloud::AlreadyExistsError => e
+        logger.warn("Failed to create an evaluation of sample set #{sample_set.display_name} (#{e.message})")
+        raise e
       end
-    end
 
-    def get_evaluation
-      Clients.evaluation_service.get_evaluation(name: result.name)
+      def get_evaluation_with_wait
+        logger.info("Fetching evaluations...")
+
+        while (e = get_evaluation)
+          return e if e.state == :SUCCEEDED
+
+          logger.info("Still waiting for evaluation to complete...")
+          Kernel.sleep(10)
+        end
+      end
+
+      def get_evaluation
+        Clients.evaluation_service.get_evaluation(name: result.name)
+      end
     end
   end
 end
