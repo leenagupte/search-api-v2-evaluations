@@ -8,6 +8,7 @@ gem "prometheus-client"
 group :test do
   gem "pry"
   gem "simplecov", require: false
+  gem "timecop"
 end
 
 group :development, :test do
