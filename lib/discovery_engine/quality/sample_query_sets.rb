@@ -1,3 +1,5 @@
+require "discovery_engine/quality/sample_query_set"
+
 module DiscoveryEngine
   module Quality
     class SampleQuerySets
